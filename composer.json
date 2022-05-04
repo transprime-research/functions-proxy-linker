@@ -1,0 +1,30 @@
+{
+    "name": "transprime-research/functions-linker",
+    "description": "Link PHP global functions to your class",
+    "type": "library",
+    "require": {
+        "nette/php-generator": "^4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "symfony/var-dumper": "^6.0",
+        "nikic/php-parser": "^4.13"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Transprime\\FunctionsLinker\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Oluwatobi Samuel Omisakin",
+            "email": "omisakin.oluwatobi@gmail.com"
+        }
+    ],
+    "autoload-dev": {
+        "psr-4": {
+            "Transprime\\FunctionsLinker\\Tests\\": "tests/"
+        }
+    }
+}
