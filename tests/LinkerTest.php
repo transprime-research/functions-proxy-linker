@@ -4,28 +4,30 @@ declare(strict_types=1);
 
 namespace Transprime\FunctionsLinker\Tests;
 
-use Nette\PhpGenerator\ClassType;
 use PHPUnit\Framework\TestCase;
 use Transprime\FunctionsLinker\Linker;
-use Transprime\FunctionsLinker\Tests\Stub\LinkerStub;
+use Transprime\FunctionsLinker\Link;
 
 class LinkerTest extends TestCase
 {
     private array $initial;
 
-    public function testOn()
+    protected function setUp(): void
     {
-        $path = __DIR__.'/stub/LinkerStub.php';
+        parent::setUp();
+        $path = __DIR__ . '/../src/Link.php';
 
         $this->initial[0] = $path;
         $this->initial[1] = file_get_contents($path);
+    }
 
+    public function testOn(): void
+    {
         $this->assertStringNotContainsString('is_array', $this->initial[1]);
 
         $linker = new Linker();
-
-        $linker->on(LinkerStub::class)
-            ->save(__DIR__.'/stub/LinkerStub.php');
+        $linker->on(Link::class)
+            ->save($this->initial[0]);
 
         $this->assertStringContainsString('is_array', file_get_contents($this->initial[0]));
     }
