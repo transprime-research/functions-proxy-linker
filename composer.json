@@ -3,7 +3,9 @@
     "description": "Link PHP global functions to your class",
     "type": "library",
     "require": {
-        "nette/php-generator": "^4.0"
+        "php": ">=7.4",
+        "nette/php-generator": "^4.0",
+        "transprime-research/piper": "^2.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",

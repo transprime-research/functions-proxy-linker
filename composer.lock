@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2aabec27d0b2cbd0172336b3072fd7c2",
+    "content-hash": "dc6a09c667f4e3f73fa7005f2c587d02",
     "packages": [
         {
             "name": "nette/php-generator",
@@ -158,6 +158,62 @@
                 "source": "https://github.com/nette/utils/tree/v3.2.7"
             },
             "time": "2022-01-24T11:29:14+00:00"
+        },
+        {
+            "name": "transprime-research/piper",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/transprime-research/piper.git",
+                "reference": "1f64fdfc349ee9e55a175255c1e432ee918cf0d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/transprime-research/piper/zipball/1f64fdfc349ee9e55a175255c1e432ee918cf0d3",
+                "reference": "1f64fdfc349ee9e55a175255c1e432ee918cf0d3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=6.0",
+                "symfony/var-dumper": "^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "Helpers/helpers.php"
+                ],
+                "psr-4": {
+                    "Transprime\\Piper\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oluwatobi Samuel Omisakin",
+                    "email": "omisakin.oluwatobi@gmail.com"
+                }
+            ],
+            "description": "PHP Pipe method execution with values from chained method executions",
+            "homepage": "https://transprime-research.github.io/piper/",
+            "keywords": [
+                "Piper",
+                "functional",
+                "helpers",
+                "laravel",
+                "php",
+                "pipe"
+            ],
+            "support": {
+                "issues": "https://github.com/transprime-research/piper/issues",
+                "source": "https://github.com/transprime-research/piper/issues"
+            },
+            "time": "2022-05-02T21:02:06+00:00"
         }
     ],
     "packages-dev": [

@@ -1,35 +1,53 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Transprime\FunctionsLinker;
 
+use Nette\PhpGenerator\ClassLike;
+use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\PsrPrinter;
 use ReflectionFunction;
-use Transprime\FunctionsLinker\Tests\Stub\LinkerStub;
 
-class Linker extends LinkerStub
+class Linker
 {
-    public function on(string $classFile, string $storagePath)
-    {
-        $class = \Nette\PhpGenerator\ClassType::from($classFile, true);
+    private ClassLike $class;
+    private string $classFile;
 
-        $this->getPHPFunctions([$class, 'addComment']);
+    public function on(string $classFile, array $except = []): self
+    {
+        $this->classFile = $classFile;
+        $this->class = ClassType::from($this->classFile, true);
+
+        array_map(
+            fn($functionType) => $this->getPHPFunctions([$this->class, 'addComment'], $functionType, $except),
+            ['internal'],
+        );
+
+        return $this;
+    }
+
+    public function save(string $storagePath)
+    {
+        $classContent = (new PsrPrinter)->printClass($this->class);
 
         file_put_contents(
             $storagePath,
-            "<?php\n\n namespace ".substr($classFile, 0, strrpos( $classFile, '\\')).";\n\n"
-            .(new \Nette\PhpGenerator\PsrPrinter)->printClass($class)
+            "<?php\n\n namespace ".substr($this->classFile, 0, strrpos($this->classFile, '\\')).";\n\n"
+            .$classContent
         );
     }
 
     /**
      * @throws \ReflectionException
      */
-    private function getPHPFunctions(callable $callOnEachMethod): void
+    private function getPHPFunctions(callable $callOnEachMethod, string $functionType, array $except): void
     {
-        $functions = get_defined_functions()['internal'];
+        $functions = get_defined_functions()[$functionType];
 
         foreach ($functions as $function) {
+            if (in_array($function, $except, true)) {
+                continue;
+            }
+
             $reflectionFunction = new ReflectionFunction($function);
 
             // Skip functions with no parameters
@@ -48,16 +66,23 @@ class Linker extends LinkerStub
                 } else {
                     $temporaryArgument.= '$' . $param->getName();
                 }
+
                 $args[] = $temporaryArgument;
                 unset ($temporaryArgument);
             }
-            $callOnEachMethod('@method self ' . $function . '(' . implode(', ', $args) . ')');
+
+            if (false === strripos($function, '\\')) {
+                $callOnEachMethod('@method self ' . $function . '(' . implode(', ', $args) . ')');
+            } else {
+                $functionPaths = explode('\\', $function);
+                $functionName = $functionPaths[count($functionPaths)-1];
+                $callOnEachMethod('@method self ' . $functionName . '(' . implode(', ', $args) . ')'." <$function>");
+            }
             unset($args);
         }
     }
 
-
-    private function paramIsOptional(\ReflectionParameter $parameter)
+    private function paramIsOptional(\ReflectionParameter $parameter): bool
     {
         try {
             $optional = $parameter->isOptional();
