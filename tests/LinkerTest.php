@@ -7,6 +7,7 @@ namespace Transprime\FunctionsLinker\Tests;
 use PHPUnit\Framework\TestCase;
 use Transprime\FunctionsLinker\Linker;
 use Transprime\FunctionsLinker\Link;
+use Transprime\FunctionsLinker\Tests\stub\LinkerStubber;
 
 class LinkerTest extends TestCase
 {
@@ -15,7 +16,7 @@ class LinkerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $path = __DIR__ . '/../src/Link.php';
+        $path = __DIR__ . '/stub/LinkerStubber.php';
 
         $this->initial[0] = $path;
         $this->initial[1] = file_get_contents($path);
@@ -26,7 +27,7 @@ class LinkerTest extends TestCase
         $this->assertStringNotContainsString('is_array', $this->initial[1]);
 
         $linker = new Linker();
-        $linker->on(Link::class)
+        $linker->on(LinkerStubber::class)
             ->save($this->initial[0]);
 
         $this->assertStringContainsString('is_array', file_get_contents($this->initial[0]));

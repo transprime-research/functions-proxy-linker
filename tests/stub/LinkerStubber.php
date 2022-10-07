@@ -1,8 +1,7 @@
 <?php
 
-namespace Transprime\FunctionsLinker\Tests\stub;
+ namespace Transprime\FunctionsLinker\Tests\stub;
 
 class LinkerStubber
 {
-    use LinkerStub;
 }
