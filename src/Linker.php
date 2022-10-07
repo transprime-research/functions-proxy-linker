@@ -11,21 +11,37 @@ class Linker
 {
     private ClassLike $class;
     private string $classFile;
+    private bool $skipFirstParam = false;
 
-    public function on(string $classFile, array $except = []): self
+    public function __construct(string $classFile)
     {
         $this->classFile = $classFile;
         $this->class = ClassType::from($this->classFile, true);
+    }
 
+    public function skipFirstParameter(): self
+    {
+        $this->skipFirstParam = true;
+
+        return $this;
+    }
+
+    public static function on(string $classFile): self
+    {
+        return new static($classFile);
+    }
+
+    public function link(array $exceptFunctions = []): self
+    {
         array_map(
-            fn($functionType) => $this->getPHPFunctions([$this->class, 'addComment'], $functionType, $except),
+            fn($functionType) => $this->getPHPFunctions([$this->class, 'addComment'], $functionType, $exceptFunctions),
             ['internal'],
         );
 
         return $this;
     }
 
-    public function save(string $storagePath)
+    public function save(string $storagePath): void
     {
         $classContent = (new PsrPrinter)->printClass($this->class);
 
@@ -56,7 +72,12 @@ class Linker
             }
 
             $args = [];
-            foreach ($reflectionFunction->getParameters() as $param) {
+            foreach ($reflectionFunction->getParameters() as $key => $param) {
+
+                if ($this->skipFirstParam && 0 === $key) {
+                    continue;
+                }
+
                 $temporaryArgument = $param->getType().' ';
                 if ($param->isPassedByReference())  {
                     $temporaryArgument .= ' &';

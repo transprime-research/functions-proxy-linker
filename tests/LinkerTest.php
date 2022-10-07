@@ -26,8 +26,8 @@ class LinkerTest extends TestCase
     {
         $this->assertStringNotContainsString('is_array', $this->initial[1]);
 
-        $linker = new Linker();
-        $linker->on(LinkerStubber::class)
+        Linker::on(LinkerStubber::class)
+            ->link()
             ->save($this->initial[0]);
 
         $this->assertStringContainsString('is_array', file_get_contents($this->initial[0]));
