@@ -1,7 +1,21 @@
 {
-    "name": "transprime-research/functions-linker",
+    "name": "transprime-research/functions-proxy-linker",
     "description": "Link PHP global functions to your class",
+    "license": "MIT",
     "type": "library",
+    "keywords": [
+        "PHP",
+        "Functions",
+        "Linker",
+        "Proxy",
+        "Functional",
+        "Helpers"
+    ],
+    "homepage": "https://github.com/transprime-research/functions-proxy-linker",
+    "support": {
+        "issues": "https://github.com/transprime-research/functions-proxy-linker/issues",
+        "source": "https://github.com/transprime-research/functions-proxy-linker"
+    },
     "require": {
         "php": ">=7.4",
         "nette/php-generator": "^4.0"
@@ -11,7 +25,6 @@
         "symfony/var-dumper": "^6.0",
         "nikic/php-parser": "^4.13"
     },
-    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Transprime\\FunctionsLinker\\": "src/"
